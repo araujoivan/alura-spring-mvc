@@ -1,0 +1,74 @@
+
+1) Mysql installation path in Macos
+   > cd /usr/local/mysql/bin
+
+2) The property "hibernate.hbm2ddl.auto", "update" guarantees that for every modification
+   in model classes the will be changes in the schema. We dont need to create a table everytime
+   we create a new @Entity.
+
+
+3) @EnableTransactionManagement this annotation ask Spring to take care of database transactions
+
+4) @Repository  //Repository extends from Component. It is a semantic way of annotate a Component 
+
+
+5) If jstl tags are not working maybe you have an unusefull web.xml in your project
+
+6) Problem Unknown initial character set index '255' received from server 
+   Solved changing mysql-connector-java 5.1.15 to 8.0.15 into pom.xml
+
+7) You have to guarantee encoding UTF-8 by:
+   Configuring spring to deal with utf-8 by overriding SpringServletConfiguration.getServletFilters method  
+   Defining pageEncoding="UTF-8 into jsp <page> initial tag
+   Take care about database encoding
+
+8) Redirect is an HTTP Status 302.. Always redirect after post because post save user data
+   and it may generate F5 bug..that is if you have a persistence, data can be persistent several times
+   new ModelAndView("redirect:products")
+   see 302 status in Chrome network tab
+
+9) Through automatic injection param RedirectAttributes you can configure attributes for a redirection
+   addFlashAttribute provides a mechanism to add attribute after a redirection
+   Flash Scoped .. during only one request
+
+10) Using validation with spring validator and binder function into controller.
+    Spring injects BindingResult in the controller method parameter. Att: it must be the second parameter right after
+    the main object.
+
+
+11) Using the Spring mechanism of validation
+    <form:form action="${s:mvcUrl('PC#save').build()}" method="POST" commandName="product">
+    PC stand for ProductController.save  ...
+    commandName="product enables the use of <form:errors path="description" />
+
+12) Loading validation messages through bean configuration MessageSource 
+
+13) Formatting a standart Date for all system through bean configuration FormattingConversionService
+
+14) Configuring the use of jsps through bean configuration internalResourceViewResolver
+
+15) Configuring Multi-part upload files through customizeRegistration into ServletConfiguration
+    Obs: When running with maven, the servlet context path points to /target/app
+
+16) Using redirects to avoid F5 Bug through new ModelAndView("redirect:products")
+
+17) Using  <form:input and errors into jsp through spring tag-libs
+
+18) Spring MVC deny the access to resource folder, for this reason Tomcat is not able to load CSS files from this folder
+    To grant access is necessary to overwrite the method configureDefaultServletHandling in AppWebConfiguration class
+
+
+19 In details.jsp was used <c:url value="/cart/add" to redirect to cart keeping context
+
+20) All beans will be available in jsp files.
+    Into AppWebConfiguration method internalResourceViewResolver do -> resolver.setExposeContextBeansAsAttributes(Boolean.TRUE);
+    expose just beans declares into list  
+    resolver.setExposedContextBeanNames("shopCart");
+
+21) By default, when we annoted a class with @Component it becomes a singleton with APPLICATION scope. By default, controllers
+    should use @Scope(value=WebApplicationContext.SCOPE_REQUEST)
+
+22) All beans annotated as @Scope(value=WebApplicationContext.SCOPE_SESSION) need to implement Serializeble
+    cause the server persiste this data for future recoveries.
+
+23) All data is save in server. To inspect -> Chrome DevTools -> Resouces Tab -> Cookies -> localhost
